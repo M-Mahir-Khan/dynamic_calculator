@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>calculator</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+
+    <script>
+        const body = document.body
+        const calculator = createAndAppend("div","class","calculator",body)
+        const innerDiv = createAndAppend("div","class","inner-div",calculator)
+        const displayInput = createAndAppend("input","type","text",innerDiv)
+        displayInput.setAttribute("class","display-input")
+        const key = createAndAppend("div","class","keys",innerDiv)
+
+
+        const buttons = ['AC','Del','%','/','7','8','9','*','4','5','6','-','1','2','3','+','0','.','=']
+     
+        buttons.forEach(btnText => {
+            const btn = createAndAppend("button","class","btn",key,btnText,null,"click")
+            if(btnText === '='){
+                btn.classList.add('span')
+            }
+        })
+     function createAndAppend(tag, attType, attName, parent, text, placeholder, event){
+         const element = document.createElement(tag)
+         
+         if(!!attType && !! attName){
+            element.setAttribute(attType,attName);
+         }
+         if(!!placeholder){
+            element.setAttribute("placeholder",placeholder);
+         }
+         if(!!parent){
+            parent.append(element);
+         }
+         if(!!text){
+            element.innerText = text;
+         }
+         if(!!event){
+            element.addEventListener(event,listener)
+         }
+         return element
+     }
+
+     function listener(e){
+        let buttonText = e.target.innerText
+
+        if(buttonText === 'AC'){
+            displayInput.value = '';
+        }else if(buttonText === 'Del'){
+            displayInput.value = displayInput.value.slice(0,-1);
+        }else if(buttonText === '='){
+            try{
+                displayInput.value = eval(displayInput.value);
+            }catch(error){
+                displayInput.value = 'Error';
+            }
+        }else{
+            displayInput.value += buttonText;
+        }
+     }
+    </script>
+</body>
+</html>
